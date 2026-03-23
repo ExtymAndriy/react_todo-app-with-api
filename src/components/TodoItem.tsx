@@ -73,9 +73,7 @@ export const TodoItem: React.FC<Props> = ({
       }
 
       if (result === 'error') {
-        // ❗ залишаємо форму відкритою
         setIsEditing(true);
-        // повертаємо фокус на поле
         inputRef.current?.focus();
       }
     } finally {
@@ -91,7 +89,6 @@ export const TodoItem: React.FC<Props> = ({
   };
 
   const handleEditBlur = () => {
-    // ❗ НЕ закривати форму поки йде запит
     if (localLoading) {
       return;
     }
@@ -106,15 +103,15 @@ export const TodoItem: React.FC<Props> = ({
         completed: todo.completed,
       })}
     >
-      <label className="todo__status-label">
-        <input
-          type="checkbox"
-          className="todo__status"
-          data-cy="TodoStatus"
-          checked={todo.completed}
-          onChange={() => onToggleComplete(todo.id)}
-        />
-      </label>
+      {/* ✅ FIX: без label, тільки checkbox */}
+      <input
+        type="checkbox"
+        className="todo__status"
+        data-cy="TodoStatus"
+        checked={todo.completed}
+        onChange={() => onToggleComplete(todo.id)}
+        aria-label="Toggle todo status"
+      />
 
       {isEditing ? (
         <form
@@ -151,6 +148,7 @@ export const TodoItem: React.FC<Props> = ({
           className="todo__remove"
           data-cy="TodoDelete"
           onClick={() => onDelete(todo.id)}
+          aria-label="Delete todo"
         >
           ×
         </button>
