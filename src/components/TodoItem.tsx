@@ -103,15 +103,16 @@ export const TodoItem: React.FC<Props> = ({
         completed: todo.completed,
       })}
     >
-      {/* ✅ FIX: без label, тільки checkbox */}
-      <input
-        type="checkbox"
-        className="todo__status"
-        data-cy="TodoStatus"
-        checked={todo.completed}
-        onChange={() => onToggleComplete(todo.id)}
-        aria-label="Toggle todo status"
-      />
+      <label className="todo__status-label">
+        <input
+          type="checkbox"
+          className="todo__status"
+          data-cy="TodoStatus"
+          checked={todo.completed}
+          onChange={() => onToggleComplete(todo.id)}
+          aria-label="Toggle todo status"
+        />
+      </label>
 
       {isEditing ? (
         <form

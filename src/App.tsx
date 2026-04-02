@@ -141,9 +141,21 @@ export const App: React.FC = () => {
     }
 
     if (!trimmed) {
-      await deleteTodo(id);
+      setTodos(current =>
+        current.map(t => (t.id === id ? { ...t, loading: true } : t)),
+      );
 
-      return 'deleted';
+      try {
+        await deleteTodoAPI(id);
+        setTodos(current => current.filter(t => t.id !== id));
+        return 'deleted';
+      } catch {
+        setTodos(current =>
+          current.map(t => (t.id === id ? { ...t, loading: false } : t)),
+        );
+        setErrorMessage('Unable to delete a todo');
+        return 'error';
+      }
     }
 
     if (trimmed === todo.title) {

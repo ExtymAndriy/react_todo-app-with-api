@@ -10,6 +10,12 @@ type Props = {
   onClearCompleted: () => void;
 };
 
+const filterLinks = [
+  { status: Status.All, cy: 'FilterLinkAll', text: 'All' },
+  { status: Status.Active, cy: 'FilterLinkActive', text: 'Active' },
+  { status: Status.Completed, cy: 'FilterLinkCompleted', text: 'Completed' },
+];
+
 export const Footer: React.FC<Props> = ({
   todos,
   filterStatus,
@@ -25,39 +31,21 @@ export const Footer: React.FC<Props> = ({
         {activeCount} items left
       </span>
 
+      {/* Navigation for filtering todos by status */}
       <nav className="filter" data-cy="Filter">
-        <button
-          type="button"
-          className={classNames('filter__link', {
-            selected: filterStatus === Status.All,
-          })}
-          data-cy="FilterLinkAll"
-          onClick={() => setFilterStatus(Status.All)}
-        >
-          All
-        </button>
-
-        <button
-          type="button"
-          className={classNames('filter__link', {
-            selected: filterStatus === Status.Active,
-          })}
-          data-cy="FilterLinkActive"
-          onClick={() => setFilterStatus(Status.Active)}
-        >
-          Active
-        </button>
-
-        <button
-          type="button"
-          className={classNames('filter__link', {
-            selected: filterStatus === Status.Completed,
-          })}
-          data-cy="FilterLinkCompleted"
-          onClick={() => setFilterStatus(Status.Completed)}
-        >
-          Completed
-        </button>
+        {filterLinks.map(({ status, cy, text }) => (
+          <button
+            key={status}
+            type="button"
+            className={classNames('filter__link', {
+              selected: filterStatus === status,
+            })}
+            data-cy={cy}
+            onClick={() => setFilterStatus(status)}
+          >
+            {text}
+          </button>
+        ))}
       </nav>
 
       <button
